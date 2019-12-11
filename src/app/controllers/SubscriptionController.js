@@ -40,6 +40,16 @@ class SubscriptionController {
         .json({ error: { message: 'Algo deu errado', error: err } });
     }
   }
+
+  async index(req, res) {
+    const subscriptions = await Subscription.findAll();
+    if (!subscriptions) {
+      res
+        .status(400)
+        .json({ error: { message: 'Não há matrículas para apresentar' } });
+    }
+    return res.json(subscriptions);
+  }
 }
 
 export default new SubscriptionController();

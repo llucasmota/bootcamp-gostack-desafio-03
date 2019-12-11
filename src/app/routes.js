@@ -5,6 +5,7 @@ import StudentsController from './controllers/StudentsController';
 import auth from './middlewares/auth';
 import PlansController from './controllers/PlansController';
 import Subscription from './controllers/SubscriptionController';
+import SubscriptionController from './controllers/SubscriptionController';
 
 const routes = new Router();
 
@@ -24,5 +25,6 @@ routes.post('/plans', PlansController.store);
 routes.put('/plans/:id', PlansController.update);
 
 routes.post('/subscriptions', Subscription.store);
+routes.get('/subscriptions', SubscriptionController.index);
 
 export default routes;
