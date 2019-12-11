@@ -50,6 +50,34 @@ class SubscriptionController {
     }
     return res.json(subscriptions);
   }
+
+  async update(req, res) {
+    const subscription = await Subscription.findByPk(req.params.id);
+    if (!subscription) {
+      res.status(401).json({ error: { message: 'Registro inválido' } });
+    }
+    const data = req.body;
+    if (data.plan_id) {
+      const plan = await Plans.findByPk(data.plan_id);
+      if (!plan) {
+        return res.status(400).json({ error: { message: 'Plano não existe' } });
+      }
+    }
+    /**
+     * 1 - verifica se start_date foi informado
+     * 2 - caso seja informado a variável notValidateDate retorna true
+     * caso a data seja inválida
+     */
+    if (data.start_date) {
+      const notValidDate = moment().isBefore(moment());
+      if (notValidDate) {
+        return res.status(401).json({
+          error: { message: 'A data não deve ser anterior ao dia atual' },
+        });
+      }
+    }
+    return res.json(subscription);
+  }
 }
 
 export default new SubscriptionController();
