@@ -52,31 +52,41 @@ class SubscriptionController {
   }
 
   async update(req, res) {
+    const { plan_id, start_date } = req.body;
+
     const subscription = await Subscription.findByPk(req.params.id);
     if (!subscription) {
       res.status(401).json({ error: { message: 'Registro inválido' } });
     }
-    const data = req.body;
-    if (data.plan_id) {
-      const plan = await Plans.findByPk(data.plan_id);
-      if (!plan) {
-        return res.status(400).json({ error: { message: 'Plano não existe' } });
-      }
+
+    const plan = await Plans.findByPk(plan_id);
+
+    if (!plan) {
+      return res.status(400).json({ error: { message: 'Plano inválido' } });
     }
-    /**
-     * 1 - verifica se start_date foi informado
-     * 2 - caso seja informado a variável notValidateDate retorna true
-     * caso a data seja inválida
-     */
-    if (data.start_date) {
-      const notValidDate = moment().isBefore(moment());
-      if (notValidDate) {
-        return res.status(401).json({
-          error: { message: 'A data não deve ser anterior ao dia atual' },
-        });
-      }
+
+    const notValidDate = moment(start_date).isBefore(moment());
+    if (notValidDate) {
+      return res.status(400).json({
+        error: { message: 'A data não deve ser anterior ao dia atual' },
+      });
     }
-    return res.json(subscription);
+    const finalDate = moment(start_date).add(plan.duration, 'month');
+    /** calculando o preço do plano */
+    const realPrice = plan.price * plan.duration;
+    try {
+      await subscription.update({
+        price: realPrice,
+        start_date,
+        plan_id,
+        end_date: finalDate,
+      });
+      return res.json({ subscription });
+    } catch (err) {
+      return res
+        .status(err.status)
+        .json({ error: { message: 'Algo deu errado' } });
+    }
   }
 }
 
