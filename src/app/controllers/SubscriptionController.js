@@ -2,6 +2,7 @@ import moment from 'moment';
 import Subscription from '../models/Subscription';
 import Plans from '../models/Plan';
 import Students from '../models/Student';
+import Notification from '../schemas/Notification';
 
 class SubscriptionController {
   async store(req, res) {
@@ -28,6 +29,16 @@ class SubscriptionController {
         start_date,
         price: realPrice,
         end_date: finalDate,
+      });
+
+      /**
+       * Notificando aluno
+       */
+      await Notification.create({
+        title: 'Nova matrícula',
+        content: `Obrigado por confiar em nós, recebemos sua nova matrícula:
+        Plano: ${plan.title}, Data de término: ${subscription.end_date},
+        Valor total:${realPrice}`,
       });
       return res.status(200).json({
         price: subscription.price,
