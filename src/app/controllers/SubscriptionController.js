@@ -2,6 +2,7 @@ import moment from 'moment';
 import Subscription from '../models/Subscription';
 import Plans from '../models/Plan';
 import Students from '../models/Student';
+import Mail from '../../lib/Mail';
 import Notification from '../schemas/Notification';
 
 class SubscriptionController {
@@ -30,15 +31,9 @@ class SubscriptionController {
         price: realPrice,
         end_date: finalDate,
       });
-
-      /**
-       * Notificando aluno
-       */
-      await Notification.create({
-        title: 'Nova matrícula',
-        content: `Obrigado por confiar em nós, recebemos sua nova matrícula:
-        Plano: ${plan.title}, Data de término: ${subscription.end_date},
-        Valor total:${realPrice}`,
+      await Mail.sendMail({
+        from: 'mailer@nodemailer.com',
+        to: 'daemon@nodemailer.com',
       });
       return res.status(200).json({
         price: subscription.price,
