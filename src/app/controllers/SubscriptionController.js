@@ -32,8 +32,9 @@ class SubscriptionController {
         end_date: finalDate,
       });
       await Mail.sendMail({
-        from: 'mailer@nodemailer.com',
-        to: 'daemon@nodemailer.com',
+        from: 'gympoint@nodemailer.com',
+        to: student.email,
+        text: 'Nova matrícula',
       });
       return res.status(200).json({
         price: subscription.price,
