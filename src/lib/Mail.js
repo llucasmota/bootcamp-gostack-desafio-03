@@ -1,5 +1,8 @@
 import nodemailer from 'nodemailer';
 import mailConfig from '../config/mail';
+import { resolve } from 'path';
+import nodemailerhbs from 'nodemailer-express-handlebars';
+
 class Mail {
   constructor() {
     const { host, port, secure, auth } = mailConfig;
@@ -12,7 +15,9 @@ class Mail {
       secure,
       auth: auth.user ? auth : null,
     });
+    this.configureTemplates();
   }
+  configureTemplates() {}
   /***
    * recupera todos os parametros necessários e chama o transporter
    */
