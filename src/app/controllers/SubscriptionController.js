@@ -34,7 +34,7 @@ class SubscriptionController {
       await Mail.sendMail({
         from: 'gympoint@nodemailer.com',
         to: student.email,
-        text: 'Nova matrícula',
+        text: 'dasdas',
       });
       return res.status(200).json({
         price: subscription.price,
