@@ -34,7 +34,14 @@ class SubscriptionController {
       await Mail.sendMail({
         from: 'gympoint@nodemailer.com',
         to: student.email,
-        text: 'dasdas',
+        /**
+         * template a ser utilizado
+         */
+        template: 'subscription',
+        /**dados que são utilizados na view, geralmente atributos */
+        context: {
+          student,
+        },
       });
       return res.status(200).json({
         price: subscription.price,

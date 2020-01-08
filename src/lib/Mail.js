@@ -21,13 +21,14 @@ class Mail {
   configureTemplates() {
     /** recuperando o caminho que será utilizado */
     const viewPath = resolve(__dirname, '..', 'app', 'views', 'emails');
+
     this.transporter.use(
       'compile',
       nodemailerhbs({
         viewEngine: exphbs.create({
           layoutsDir: resolve(viewPath, 'layouts'),
           partialsDir: resolve(viewPath, 'partials'),
-          defaultLayout: resolve(viewPath, 'layouts', 'default'),
+          defaultLayout: 'default',
           extname: '.hbs',
         }),
         viewPath,
@@ -40,7 +41,7 @@ class Mail {
    */
   sendMail(message) {
     return this.transporter.sendMail({
-      ...mailConfig,
+      ...mailConfig.default,
       ...message,
     });
   }
