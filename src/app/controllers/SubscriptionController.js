@@ -41,6 +41,9 @@ class SubscriptionController {
         /**dados que são utilizados na view, geralmente atributos */
         context: {
           student,
+          plan,
+          date_start: moment(start_date).format('MMM Do YYYY'),
+          date_end: moment(finalDate).format('MMM Do YYYY'),
         },
       });
       return res.status(200).json({
