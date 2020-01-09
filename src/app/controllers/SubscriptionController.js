@@ -3,7 +3,6 @@ import Subscription from '../models/Subscription';
 import Plans from '../models/Plan';
 import Students from '../models/Student';
 import Mail from '../../lib/Mail';
-import Notification from '../schemas/Notification';
 
 class SubscriptionController {
   async store(req, res) {
@@ -31,21 +30,7 @@ class SubscriptionController {
         price: realPrice,
         end_date: finalDate,
       });
-      await Mail.sendMail({
-        from: 'gympoint@nodemailer.com',
-        to: student.email,
-        /**
-         * template a ser utilizado
-         */
-        template: 'subscription',
-        /**dados que são utilizados na view, geralmente atributos */
-        context: {
-          student,
-          plan,
-          date_start: moment(start_date).format('MMM Do YYYY'),
-          date_end: moment(finalDate).format('MMM Do YYYY'),
-        },
-      });
+
       return res.status(200).json({
         price: subscription.price,
         start_date: subscription.start_date,
