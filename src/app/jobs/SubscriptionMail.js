@@ -6,7 +6,10 @@ class SubscriptionMail {
     return 'SubscriptionMail';
   }
   async handle({ data }) {
-    const { student, plan } = data;
+    const { student, plan, subscription, price } = data;
+
+    console.log('A fila executou');
+
     await Mail.sendMail({
       from: 'gympoint@nodemailer.com',
       to: student.email,
@@ -18,8 +21,9 @@ class SubscriptionMail {
       context: {
         student,
         plan,
-        date_start: moment(start_date).format('MMM Do YYYY'),
-        date_end: moment(finalDate).format('MMM Do YYYY'),
+        start_date: moment(subscription.start_date).format('MMM Do YYYY'),
+        end_date: moment(subscription.end_date).format('MMM Do YYYY'),
+        price,
       },
     });
   }

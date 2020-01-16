@@ -1,4 +1,8 @@
 import Sequelize, { Model } from 'sequelize';
+import Queue from '../../lib/Queue';
+import SubscriptionMail from '../jobs/SubscriptionMail';
+import Plan from '../models/Plan';
+import Student from '../models/Student';
 
 class Subscription extends Model {
   static init(sequelize) {
@@ -12,6 +16,18 @@ class Subscription extends Model {
         sequelize,
       }
     );
+
+    this.addHook('beforeCreate', async subscription => {
+      const plan = await Plan.findByPk(subscription.plan_id);
+      const student = await Student.findByPk(subscription.student_id);
+      const price = plan.price * plan.duration;
+      await Queue.add(SubscriptionMail.key, {
+        subscription,
+        student,
+        plan,
+        price,
+      });
+    });
     return this;
   }
 

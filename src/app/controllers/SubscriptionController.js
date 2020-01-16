@@ -2,7 +2,8 @@ import moment from 'moment';
 import Subscription from '../models/Subscription';
 import Plans from '../models/Plan';
 import Students from '../models/Student';
-import Mail from '../../lib/Mail';
+import SubscriptionMail from '../jobs/SubscriptionMail';
+import Queue from '../../lib/Queue';
 
 class SubscriptionController {
   async store(req, res) {

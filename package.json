@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "test": "nodemon src/app.js",
-    "debug": "node --inspect-brk -r sucrase/register src/app.js"
+    "debug": "node --inspect-brk -r sucrase/register src/app.js",
+    "queue": "nodemon src/queue.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
