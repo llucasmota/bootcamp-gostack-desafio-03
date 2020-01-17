@@ -16,6 +16,10 @@ class Subscription extends Model {
         sequelize,
       }
     );
+    /**
+     * Consumo da fila de envio de email
+     * A chamada ocorre logo após criar uma matrícula
+     */
 
     this.addHook('beforeCreate', async subscription => {
       const plan = await Plan.findByPk(subscription.plan_id);

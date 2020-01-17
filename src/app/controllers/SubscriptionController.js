@@ -91,6 +91,18 @@ class SubscriptionController {
         .json({ error: { message: 'Algo deu errado' } });
     }
   }
+
+  async delete(req, res) {
+    const subscription = await Subscription.findByPk(req.params.id);
+    console.log(req.params.id);
+    if (!subscription) {
+      return res
+        .status(400)
+        .json({ error: { message: 'O registro não existe' } });
+    }
+    await Subscription.destroy({ where: { id: req.params.id } });
+    return res.json({ resultado: { message: 'Exclusão realizada' } });
+  }
 }
 
 export default new SubscriptionController();
