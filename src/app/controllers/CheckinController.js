@@ -6,6 +6,7 @@ class CheckinController {
   async store(req, res) {
     const { student_id } = req.body;
     const student = await Student.findByPk(student_id);
+
     if (!student) {
       return res
         .status(401)
@@ -21,9 +22,18 @@ class CheckinController {
         .status(401)
         .json({ error: { message: 'Matrícula inexistente' } });
     }
-    const checkin = await Checkin.create({
-      student_id,
-    });
+    try {
+      const checkin = await Checkin.create({
+        student_id: student.id,
+      });
+      return res.json({
+        result: {
+          message: `Checkin realizado para o estudante ${student.name}`,
+        },
+      });
+    } catch (err) {
+      return res.status(400).json({ error: { message: err } });
+    }
   }
 }
 

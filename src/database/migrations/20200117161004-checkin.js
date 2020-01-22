@@ -6,7 +6,13 @@ module.exports = {
     return queryInterface.sequelize
       .query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
       .then(() => {
-        return queryInterface.createTable('checkin', {
+        return queryInterface.createTable('checkins', {
+          id: {
+            allowNull: false,
+            primaryKey: true,
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.literal('uuid_generate_v4()'),
+          },
           student_id: {
             type: Sequelize.UUID,
             allowNull: false,
@@ -27,6 +33,6 @@ module.exports = {
       });
   },
   down: queryInterface => {
-    return queryInterface.dropTable('checkin');
+    return queryInterface.dropTable('checkins');
   },
 };

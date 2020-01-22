@@ -1,12 +1,10 @@
 import Sequelize, { Model } from 'sequelize';
+import Student from './Student';
 
 class Checkin extends Model {
-  static init() {
+  static init(sequelize) {
     super.init(
-      {
-        created_at: Sequelize.DATE,
-        updated_at: Sequelize.DATE,
-      },
+      {},
       {
         sequelize,
       }
@@ -14,7 +12,7 @@ class Checkin extends Model {
     return this;
   }
   static associate(models) {
-    this.belongsTo(model.Student, { foreignKey: 'student_id', as: 'student' });
+    this.belongsTo(models.Student, { foreignKey: 'student_id', as: 'student' });
   }
 }
 
