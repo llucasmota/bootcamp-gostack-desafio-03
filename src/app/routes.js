@@ -14,7 +14,7 @@ routes.get('/', (req, res) => res.json({ message: 'Olá' }));
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
-routes.post('/checkins', CheckinController.store);
+routes.post('/students/:id/checkins', CheckinController.store);
 
 routes.use(auth);
 routes.post('/students', StudentsController.store);
@@ -30,5 +30,7 @@ routes.post('/subscriptions', Subscription.store);
 routes.get('/subscriptions', SubscriptionController.index);
 routes.put('/subscriptions/:id', SubscriptionController.update);
 routes.delete('/subscriptions/:id', SubscriptionController.delete);
+
+routes.get('/students/:id/checkins', CheckinController.index);
 
 export default routes;
