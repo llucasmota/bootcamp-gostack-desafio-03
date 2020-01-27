@@ -66,7 +66,6 @@ class CheckinController {
         .status(401)
         .json({ result: { error: 'Pesquise por dados válidos' } });
     }
-    console.log(student);
     const checkStudent = await Checkin.findAll({
       where: {
         student_id: student.id,
