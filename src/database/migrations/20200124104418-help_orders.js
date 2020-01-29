@@ -1,4 +1,3 @@
-'use strict';
 const uuid = require('uuid/v4');
 
 module.exports = {
@@ -24,12 +23,10 @@ module.exports = {
           },
           question: {
             allowNull: false,
-            type: Sequelize.STRING,
-            allowNull: false,
+            type: Sequelize.TEXT,
           },
           answer: {
-            allowNull: true,
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
           },
           answer_at: {
             type: Sequelize.DATE,

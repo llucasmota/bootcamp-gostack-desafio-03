@@ -19,6 +19,7 @@ routes.post('/sessions', SessionController.store);
 routes.post('/students/:id/checkins', CheckinController.store);
 routes.post('/students/:id/help-orders', HelpOrdersController.store);
 routes.get('/students/:id/help-orders', HelpOrdersController.index);
+routes.put('/help-orders/:id/answer', HelpOrdersController.update);
 
 routes.use(auth);
 routes.post('/students', StudentsController.store);

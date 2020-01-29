@@ -5,8 +5,10 @@ class HelpOrders extends Model {
   static init(sequelize) {
     super.init(
       {
-        question: Sequelize.STRING,
+        question: Sequelize.TEXT,
         student_id: Sequelize.UUID,
+        answer: Sequelize.TEXT,
+        answer_at: Sequelize.DATE,
       },
       {
         sequelize,
