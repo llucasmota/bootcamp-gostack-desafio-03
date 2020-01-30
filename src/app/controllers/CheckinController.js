@@ -1,9 +1,9 @@
 import Checkin from '../models/Checkin';
 import Subscription from '../models/Subscription';
 import Student from '../models/Student';
-import User from '../models/User';
 import moment from 'moment';
 import Sequelize, { Op } from 'sequelize';
+import * as Yup from 'yup';
 
 class CheckinController {
   async store(req, res) {

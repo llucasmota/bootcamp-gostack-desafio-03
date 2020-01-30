@@ -4,14 +4,30 @@ import Plans from '../models/Plan';
 import Students from '../models/Student';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 import Queue from '../../lib/Queue';
-import isValidUUID from '../middlewares/validUUID';
-// const isValidUUID = new RegExp(
-//   /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/
-// );
+import * as Yup from 'yup';
+const isValidUUID = new RegExp(
+  /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/
+);
 
 class SubscriptionController {
   async store(req, res) {
+    const schema = Yup.object().shape({
+      plan_id: Yup.string().required(),
+      student_id: Yup.string().required(),
+      start_date: Yup.date().required(),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: { message: 'Validate fails' } });
+    }
     const { plan_id, start_date, student_id } = req.body;
+    if (!isValidUUID.test(student_id) || !isValidUUID.test(plan_id)) {
+      return res.status(400).json({
+        error: {
+          message: 'Informar dados de plano e estudante corretamente',
+        },
+      });
+    }
+
     /** verificando se estudante existe */
     const student = await Students.findByPk(student_id);
     if (!student) {
