@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import HelpOrders from '../models/HelpOrders';
 import Student from '../models/Student';
 import moment from 'moment';
+import Queue from '../../lib/Queue';
+import HelpOrderMail from '../jobs/HelpOrderMail';
 
 class HelpOrdersController {
   async store(req, res) {
@@ -59,6 +61,12 @@ class HelpOrdersController {
       where: {
         id: id,
       },
+      include: [
+        {
+          model: Student,
+          as: 'student',
+        },
+      ],
     });
     if (!ordersByClient) {
       return res.status(400).json({
@@ -66,12 +74,20 @@ class HelpOrdersController {
       });
     }
 
-    ordersByClient.answer = 'dasdasd';
+    ordersByClient.answer = data.answer;
     ordersByClient.answer_at = moment().format();
-    console.log(ordersByClient);
     await ordersByClient.save();
 
-    return res.json(ordersByClient);
+    await Queue.add(HelpOrderMail.key, {
+      helpOrder: ordersByClient,
+    });
+
+    return res.json({
+      name: ordersByClient.student.name,
+      question: ordersByClient.question,
+      dateAnswer: ordersByClient.answer_at,
+      answer: ordersByClient.answer,
+    });
   }
 }
 
