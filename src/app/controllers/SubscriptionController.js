@@ -4,6 +4,10 @@ import Plans from '../models/Plan';
 import Students from '../models/Student';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 import Queue from '../../lib/Queue';
+import isValidUUID from '../middlewares/validUUID';
+// const isValidUUID = new RegExp(
+//   /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/
+// );
 
 class SubscriptionController {
   async store(req, res) {
@@ -94,7 +98,6 @@ class SubscriptionController {
 
   async delete(req, res) {
     const subscription = await Subscription.findByPk(req.params.id);
-    console.log(req.params.id);
     if (!subscription) {
       return res
         .status(400)

@@ -3,6 +3,7 @@ import UserController from './controllers/UserController';
 import SessionController from './controllers/SessionController';
 import StudentsController from './controllers/StudentsController';
 import auth from './middlewares/auth';
+import uuidValidate from './middlewares/validUUID';
 import PlansController from './controllers/PlansController';
 import Subscription from './controllers/SubscriptionController';
 import SubscriptionController from './controllers/SubscriptionController';
@@ -16,7 +17,7 @@ routes.get('/', (req, res) => res.json({ message: 'Olá' }));
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
-routes.post('/students/:id/checkins', CheckinController.store);
+routes.post('/students/:id/checkins', uuidValidate, CheckinController.store);
 routes.post('/students/:id/help-orders', HelpOrdersController.store);
 routes.get('/students/:id/help-orders', HelpOrdersController.index);
 routes.put('/help-orders/:id/answer', HelpOrdersController.update);
