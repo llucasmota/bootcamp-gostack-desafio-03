@@ -76,7 +76,20 @@ class SubscriptionController {
 
   async update(req, res) {
     const { plan_id, start_date } = req.body;
-
+    const schema = Yup.object().shape({
+      plan_id: Yup.string().required(),
+      start_date: Yup.date().required(),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: { message: 'Validate fails' } });
+    }
+    if (!isValidUUID.test(plan_id)) {
+      return res.status(400).json({
+        error: {
+          message: 'Informar dados de plano e estudante corretamente',
+        },
+      });
+    }
     const subscription = await Subscription.findByPk(req.params.id);
     if (!subscription) {
       res.status(401).json({ error: { message: 'Registro inválido' } });
