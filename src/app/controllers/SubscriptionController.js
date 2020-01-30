@@ -11,12 +11,12 @@ const isValidUUID = new RegExp(
 
 class SubscriptionController {
   async store(req, res) {
-    const schema = Yup.object().shape({
+    const Schema = Yup.object().shape({
       plan_id: Yup.string().required(),
       student_id: Yup.string().required(),
       start_date: Yup.date().required(),
     });
-    if (!(await schema.isValid(req.body))) {
+    if (!(await Schema.isValid(req.body))) {
       return res.status(400).json({ error: { message: 'Validate fails' } });
     }
     const { plan_id, start_date, student_id } = req.body;
@@ -76,11 +76,11 @@ class SubscriptionController {
 
   async update(req, res) {
     const { plan_id, start_date } = req.body;
-    const schema = Yup.object().shape({
+    const Schema = Yup.object().shape({
       plan_id: Yup.string().required(),
       start_date: Yup.date().required(),
     });
-    if (!(await schema.isValid(req.body))) {
+    if (!(await Schema.isValid(req.body))) {
       return res.status(400).json({ error: { message: 'Validate fails' } });
     }
     if (!isValidUUID.test(plan_id)) {

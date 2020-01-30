@@ -5,13 +5,13 @@ import configAuth from '../../config/auth';
 
 class SessionController {
   async store(req, res) {
-    const schema = Yup.object().shape({
+    const Schema = Yup.object().shape({
       email: Yup.string().email(),
       password: Yup.string()
         .required()
         .min(6),
     });
-    if (!(await schema.isValid(req.body))) {
+    if (!(await Schema.isValid(req.body))) {
       return res.status(400).json({ error: { message: 'Validation fails' } });
     }
     const { email, password } = req.body;
