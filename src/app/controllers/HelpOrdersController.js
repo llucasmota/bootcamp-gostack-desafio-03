@@ -1,9 +1,17 @@
+import * as Yup from 'yup';
 import HelpOrders from '../models/HelpOrders';
 import Student from '../models/Student';
 import moment from 'moment';
 
 class HelpOrdersController {
   async store(req, res) {
+    const schema = Yup.object().shape({
+      question: Yup.string().required(),
+    });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: { message: 'Validation fails' } });
+    }
+
     const { id } = req.params;
     const { question } = req.body;
     const student = await Student.findByPk(id);
