@@ -18,9 +18,21 @@ routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
 routes.post('/students/:id/checkins', uuidValidate, CheckinController.store);
-routes.post('/students/:id/help-orders', HelpOrdersController.store);
-routes.get('/students/:id/help-orders', HelpOrdersController.index);
-routes.put('/help-orders/:id/answer', HelpOrdersController.update);
+routes.post(
+  '/students/:id/help-orders',
+  uuidValidate,
+  HelpOrdersController.store
+);
+routes.get(
+  '/students/:id/help-orders',
+  uuidValidate,
+  HelpOrdersController.index
+);
+routes.put(
+  '/help-orders/:id/answer',
+  uuidValidate,
+  HelpOrdersController.update
+);
 
 routes.use(auth);
 routes.post('/students', StudentsController.store);
@@ -30,15 +42,19 @@ routes.post('/students', StudentsController.store);
  */
 routes.get('/plans', PlansController.index);
 routes.post('/plans', PlansController.store);
-routes.put('/plans/:id', PlansController.update);
+routes.put('/plans/:id', uuidValidate, PlansController.update);
 /**
  * Subscription
  */
 routes.post('/subscriptions', Subscription.store);
 routes.get('/subscriptions', SubscriptionController.index);
-routes.put('/subscriptions/:id', SubscriptionController.update);
-routes.delete('/subscriptions/:id', SubscriptionController.delete);
+routes.put('/subscriptions/:id', uuidValidate, SubscriptionController.update);
+routes.delete(
+  '/subscriptions/:id',
+  uuidValidate,
+  SubscriptionController.delete
+);
 
-routes.get('/students/:id/checkins', CheckinController.index);
+routes.get('/students/:id/checkins', uuidValidate, CheckinController.index);
 
 export default routes;
