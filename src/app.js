@@ -28,7 +28,6 @@ app.use(async (err, req, res, next) => {
   if (process.env.NODE_ENV !== 'production') {
     const error = await new Youch(err, res).toJSON();
     return res.json(error);
-    console.log('enviando erro dife');
   }
   return res
     .status(err.status || 500)
