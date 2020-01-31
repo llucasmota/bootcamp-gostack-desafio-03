@@ -20,12 +20,19 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(express.json());
 app.use(routes);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(Sentry.Handlers.errorHandler());
+  console.log('enviando erro');
+}
 app.use(async (err, req, res, next) => {
-  const error = await new Youch(err, res).toJSON();
-
-  return res.status(500).json(error);
+  if (process.env.NODE_ENV !== 'production') {
+    const error = await new Youch(err, res).toJSON();
+    return res.json(error);
+    console.log('enviando erro dife');
+  }
+  return res
+    .status(err.status || 500)
+    .json({ error: { message: 'Internal server error' } });
 });
-
-app.use(Sentry.Handlers.errorHandler());
 
 app.listen(3333);

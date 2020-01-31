@@ -39,7 +39,7 @@ class HelpOrdersController {
         .status(401)
         .json({ error: { message: 'Favor informar dados válidos' } });
     }
-    const ordersByClient = await HelpOrders.findAll({
+    const ordersByClient = await HelpOrders.findAllll({
       where: {
         student_id: student.id,
       },
